@@ -10,14 +10,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // Use TLS
-  auth: {
-    user: 'shstore62@gmail.com',
-    pass: 'jagnumhutdgjhelb' // Replace with the App Password you generated
-  }
-});
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // Use TLS
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });  
 
 app.post('/send-email', (req, res) => {
   const { name, lname , email, number, message } = req.body;

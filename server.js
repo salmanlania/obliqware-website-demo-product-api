@@ -1,26 +1,27 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = process.env.PORT || 3001;;
+const port = process.env.PORT || 3001; // Use Render's port or default to 3001
 
 app.use(cors());
 app.use(bodyParser.json());
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // Use TLS
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
-  });  
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // Use TLS
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 app.post('/send-email', (req, res) => {
-  const { name, lname , email, number, message } = req.body;
+  const { name, lname, email, number, message } = req.body;
 
   const mailOptions = {
     from: 'shstore62@gmail.com',
@@ -28,7 +29,7 @@ app.post('/send-email', (req, res) => {
     subject: 'New Contact Form Submission',
     text: `
       Name: ${name}
-      Last Name : ${lname}
+      Last Name: ${lname}
       Email: ${email}
       Number: ${number}
       Message: ${message}

@@ -26,7 +26,7 @@ app.post('/send-email', (req, res) => {
   const mailOptions = {
     from: 'shstore62@gmail.com',
     to: 'obliqware@gmail.com',
-    subject: 'New Contact Form Submission',
+    subject: 'New Contact Form Submission - Obliqware',
     text: `
       <h1>Obliqware Contact Us</h1>
       Name: ${name}

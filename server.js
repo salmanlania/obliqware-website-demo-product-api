@@ -61,6 +61,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://your-frontend-domain.com'], // Allow requests from localhost and your frontend domain
+  methods: 'GET,POST',
+  allowedHeaders: ['Content-Type'],
+};
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -83,7 +89,7 @@ app.post('/api/demo-request', (req, res) => {
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER, // Send to your email address
         subject: 'New Demo Request',
-        text: `
+        html: `
             You have received a new demo request!
             First Name: ${first_name}
             Last Name: ${last_name}

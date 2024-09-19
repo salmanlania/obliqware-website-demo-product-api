@@ -28,7 +28,7 @@ app.post('/send-email', (req, res) => {
     to: 'obliqware@gmail.com',
     subject: 'New Contact Form Submission - Obliqware',
     text: `
-      <h1>Obliqware Contact Us</h1>
+      <h1>Obliqware Demo Products</h1>
       Name: ${name}
       Last Name: ${lname}
       Email: ${email}

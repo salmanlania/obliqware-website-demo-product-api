@@ -52,6 +52,69 @@
 // app.listen(port, () => {
 //   console.log(`Server running at http://localhost:${port}`);
 // });
+// const express = require('express');
+// const nodemailer = require('nodemailer');
+// require('dotenv').config();
+// const cors = require('cors');
+// const bodyParser = require('body-parser');
+
+// const app = express();
+// const port = process.env.PORT || 5000;
+
+// const corsOptions = {
+//   origin: ['http://localhost:3000', 'https://obliqware.web.app'], // Allow requests from localhost and your frontend domain
+//   methods: 'GET,POST',
+//   allowedHeaders: ['Content-Type'],
+// };
+
+// app.use(cors(corsOptions));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// // Create a Nodemailer transporter
+// const transporter = nodemailer.createTransport({
+//     service: 'Gmail', // Use your email service
+//     auth: {
+//         user: process.env.EMAIL_USER, // Your email address
+//         pass: process.env.EMAIL_PASS, // Your email password or app-specific password
+//     },
+// });
+
+// // Endpoint to handle demo request
+// app.post('/api/demo-request', (req, res) => {
+//     const { first_name, last_name, email, phone_number, message, products } = req.body;
+
+//     // Create the email content
+//     const mailOptions = {
+//         from: process.env.EMAIL_USER,
+//         to: process.env.EMAIL_USER, // Send to your email address
+//         subject: 'New Demo Request',
+//         html: `
+//             You have received a new demo request!
+//             First Name: ${first_name}
+//             Last Name: ${last_name}
+//             Email: ${email}
+//             Phone: ${phone_number}
+//             Message: ${message}
+//             Products Interested: ${products}
+//         `,
+//     };
+
+//     // Send the email
+//     transporter.sendMail(mailOptions, (error, info) => {
+//         if (error) {
+//             console.error('Error sending email:', error);
+//             return res.status(500).send({ message: 'Internal Server Error', error });
+//         }
+//         console.log('Email sent:', info.response);
+//         res.status(200).send({ message: 'Email sent successfully!' });
+//     });
+// });
+
+// // Start the server
+// app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:${port}`);
+// });
 const express = require('express');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
@@ -61,13 +124,27 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Allowed origins
+const allowedOrigins = ['http://localhost:3000', 'https://obliqware.web.app'];
+
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://obliqware.web.app'], // Allow requests from localhost and your frontend domain
-  methods: 'GET,POST',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,POST,OPTIONS',
   allowedHeaders: ['Content-Type'],
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Enable pre-flight requests for all routes
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -91,12 +168,12 @@ app.post('/api/demo-request', (req, res) => {
         subject: 'New Demo Request',
         html: `
             You have received a new demo request!
-            First Name: ${first_name}
-            Last Name: ${last_name}
-            Email: ${email}
-            Phone: ${phone_number}
-            Message: ${message}
-            Products Interested: ${products}
+            <strong>First Name:</strong> ${first_name} <br />
+            <strong>Last Name:</strong> ${last_name} <br />
+            <strong>Email:</strong> ${email} <br />
+            <strong>Phone:</strong> ${phone_number} <br />
+            <strong>Message:</strong> ${message} <br />
+            <strong>Products Interested:</strong> ${products} <br />
         `,
     };
 

@@ -62,7 +62,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://your-frontend-domain.com'], // Allow requests from localhost and your frontend domain
+  origin: ['http://localhost:3000/get-demo', 'https://obliqware.web.app/get-demo'], // Allow requests from localhost and your frontend domain
   methods: 'GET,POST',
   allowedHeaders: ['Content-Type'],
 };

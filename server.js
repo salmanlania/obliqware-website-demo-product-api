@@ -5,7 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = process.env.PORT || 3001; // Use Render's port or default to 3001
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -13,11 +13,11 @@ app.use(bodyParser.json());
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
-  secure: false, // Use TLS
+  secure: false, 
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
 app.post('/send-email', (req, res) => {
@@ -25,15 +25,16 @@ app.post('/send-email', (req, res) => {
 
   const mailOptions = {
     from: 'shstore62@gmail.com',
-    to: 'salmanlania@gmail.com',
+    to: 'obliqware@gmail.com',
     subject: 'New Contact Form Submission',
     text: `
+      <h1>Obliqware Contact Us</h1>
       Name: ${name}
       Last Name: ${lname}
       Email: ${email}
       Number: ${number}
       Message: ${message}
-    `
+    `,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
